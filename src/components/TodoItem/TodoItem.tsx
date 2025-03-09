@@ -22,8 +22,8 @@ export const TodoItem = ({
       justifyContent={"space-between"}
       p={4}
       gap={2}
-      boxShadow="boxShadow100"
-      borderRadius="borderRadius400"
+      borderRadius="borderRadius200"
+      backgroundColor="white"
     >
       <Box>
         <Typography variant="h2">{todo.content}</Typography>

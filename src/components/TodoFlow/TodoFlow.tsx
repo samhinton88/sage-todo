@@ -55,7 +55,13 @@ export const TodoFlow = ({
   );
 
   return (
-    <Box display={"flex"} flexDirection="column">
+    <Box
+      display={"flex"}
+      flexGrow={1}
+      px={1}
+      flexDirection="column"
+      overflowY={"scroll"}
+    >
       {Object.entries(todosBySection).map(([status, todos]) => {
         return (
           <TodoList

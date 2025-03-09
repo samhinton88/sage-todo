@@ -6,6 +6,7 @@ import { TodoFlowActionType } from "./shared/types";
 import { useState } from "react";
 import Button from "carbon-react/lib/components/button";
 import Dialog from "carbon-react/lib/components/dialog";
+import GlobalHeader from "carbon-react/lib/components/global-header";
 
 const App = () => {
   const { data, isSuccess } = useListTodos();
@@ -31,25 +32,32 @@ const App = () => {
     }
   };
   return (
-    <Box
-      alignContent={"center"}
-      width={"full"}
-      height={"100vh"}
-      flexDirection={"row"}
-      justifyItems={"center"}
-      px={1}
-    >
-      <Box minWidth="320px" maxWidth="1024px" width={"full"}>
-        {isSuccess && <TodoFlow todos={data} onTodoClick={handleTodoClick} />}
+    <Box backgroundColor="blackOpacity05" pt={8} height={"100vh"}>
+      <GlobalHeader aria-label="Default global header component">
+        SageTodo
+      </GlobalHeader>
+      <Box px={2} display={"flex"} justifyContent={"flex-end"}>
         <Button
           buttonType="primary"
           size="large"
           iconType="plus"
+          iconTooltipMessage="Create New Todo"
           onClick={() => {
             setCreateDialogueOpen(true);
           }}
         ></Button>
-
+      </Box>
+      <Box
+        width={"full"}
+        flexDirection={"row"}
+        justifyItems={"center"}
+        px={1}
+        py={1}
+        marginTop={4}
+      >
+        <Box minWidth="320px" maxWidth="1024px" width={"full"}>
+          {isSuccess && <TodoFlow todos={data} onTodoClick={handleTodoClick} />}
+        </Box>
         <Dialog
           open={createDialogueOpen}
           onCancel={() => setCreateDialogueOpen(false)}
