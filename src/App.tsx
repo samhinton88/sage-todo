@@ -3,10 +3,14 @@ import { CreateTodo } from "./components/CreateTodo";
 import { TodoFlow } from "./components/TodoFlow/TodoFlow";
 import { useCreateTodo, useListTodos, useTodoActions } from "./hooks";
 import { TodoFlowActionType } from "./shared/types";
+import { useState } from "react";
+import Button from "carbon-react/lib/components/button";
+import Dialog from "carbon-react/lib/components/dialog";
 
 const App = () => {
   const { data, isSuccess } = useListTodos();
   const { mutateAsync: createTodo } = useCreateTodo();
+  const [createDialogueOpen, setCreateDialogueOpen] = useState(false);
   const { markAsComplete, markAsInProgress, markAsPending } = useTodoActions();
   const handleTodoClick = (id: string, action: TodoFlowActionType) => {
     switch (action) {
@@ -27,7 +31,28 @@ const App = () => {
   return (
     <Box>
       {isSuccess && <TodoFlow todos={data} onTodoClick={handleTodoClick} />}
-      <CreateTodo onSubmit={createTodo} />
+      <Button
+        buttonType="primary"
+        size="large"
+        iconType="plus"
+        onClick={() => {
+          setCreateDialogueOpen(true);
+        }}
+      ></Button>
+
+      <Dialog
+        open={createDialogueOpen}
+        onCancel={() => setCreateDialogueOpen(false)}
+        title="Create New Todo"
+        showCloseIcon
+      >
+        <CreateTodo
+          onSubmit={async (data) => {
+            await createTodo(data);
+            setCreateDialogueOpen(false);
+          }}
+        />
+      </Dialog>
     </Box>
   );
 };
