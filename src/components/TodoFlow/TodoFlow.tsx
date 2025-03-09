@@ -1,20 +1,44 @@
 import Box from "carbon-react/lib/components/box";
 import Typography from "carbon-react/lib/components/typography";
-import { Todo, TodoStatus } from "../../shared/types";
+import { Todo, TodoFlowActionType, TodoStatus } from "../../shared/types";
 import { TodoItem } from "../TodoItem";
 
-const TodoList = ({ title, todos }: { title: TodoStatus; todos: Todo[] }) => {
+const TodoList = ({
+  title,
+  todos,
+  onTodoClick,
+}: {
+  title: TodoStatus;
+  todos: Todo[];
+  onTodoClick: (id: string, action: TodoFlowActionType) => void;
+}) => {
   return (
     <Box display={"flex"} flexDirection="column">
       <Typography variant="segment-header">{title}</Typography>
       {todos.map((todo) => {
-        return <TodoItem todo={todo} key={todo.id} />;
+        return (
+          <TodoItem
+            todo={todo}
+            key={todo.id}
+            onClickMarkComplete={() => onTodoClick(todo.id, "MARK AS COMPLETE")}
+            onClickMarkInProgress={() =>
+              onTodoClick(todo.id, "MARK AS IN PROGRESS")
+            }
+            onClickMarkPending={() => onTodoClick(todo.id, "MARK AS PENDING")}
+          />
+        );
       })}
     </Box>
   );
 };
 
-export const TodoFlow = ({ todos }: { todos: Todo[] }) => {
+export const TodoFlow = ({
+  todos,
+  onTodoClick,
+}: {
+  todos: Todo[];
+  onTodoClick: (id: string, action: TodoFlowActionType) => void;
+}) => {
   const todosBySection = todos.reduce(
     (acc, todo) => {
       acc[todo.status].push(todo);
@@ -32,7 +56,12 @@ export const TodoFlow = ({ todos }: { todos: Todo[] }) => {
     <Box display={"flex"} flexDirection="column">
       {Object.entries(todosBySection).map(([status, todos]) => {
         return (
-          <TodoList key={status} todos={todos} title={status as TodoStatus} />
+          <TodoList
+            key={status}
+            todos={todos}
+            title={status as TodoStatus}
+            onTodoClick={onTodoClick}
+          />
         );
       })}
     </Box>

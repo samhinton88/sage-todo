@@ -1,10 +1,10 @@
-import { render, screen, within } from "@testing-library/react";
-import { describe, expect, test } from "vitest";
+import { fireEvent, render, screen, within } from "@testing-library/react";
+import { describe, expect, test, vi } from "vitest";
 import { TodoFlow } from "./TodoFlow";
 import { TodoStatus } from "../../shared/types";
 
 describe("TodoFlow", () => {
-  test("renders content for a todo", async () => {
+  test("renders a list of todos", async () => {
     const todos = [
       {
         id: "some-unique-id-0",
@@ -17,11 +17,30 @@ describe("TodoFlow", () => {
         status: "PENDING" as TodoStatus,
       },
     ];
-    render(<TodoFlow todos={todos} />);
+    render(<TodoFlow todos={todos} onTodoClick={() => {}} />);
 
     const todoElements = await screen.findAllByText(/to be done/);
 
     expect(todoElements).toHaveLength(2);
+  });
+
+  test("emits the correct data when a child todo item is clicked", async () => {
+    const todoItemClickedMock = vi.fn();
+    const todos = [
+      {
+        id: "some-unique-id-0",
+        content: "Something to be done",
+        status: "PENDING" as TodoStatus,
+      },
+    ];
+    render(<TodoFlow todos={todos} onTodoClick={todoItemClickedMock} />);
+
+    fireEvent.click(screen.getByRole("button", { name: /Mark as/i }));
+
+    expect(todoItemClickedMock).toHaveBeenCalledWith(
+      "some-unique-id-0",
+      "MARK AS IN PROGRESS"
+    );
   });
 
   test("segments todos by status", async () => {
@@ -37,7 +56,7 @@ describe("TodoFlow", () => {
         status: "COMPLETE" as TodoStatus,
       },
     ];
-    render(<TodoFlow todos={todos} />);
+    render(<TodoFlow todos={todos} onTodoClick={() => {}} />);
     // Find the closest container for the "PENDING" segment
     const pendingHeader = screen.getByText("PENDING");
     const pendingSegment = pendingHeader.closest("div")!;
