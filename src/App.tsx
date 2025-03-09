@@ -12,6 +12,7 @@ const App = () => {
   const { mutateAsync: createTodo } = useCreateTodo();
   const [createDialogueOpen, setCreateDialogueOpen] = useState(false);
   const { markAsComplete, markAsInProgress, markAsPending } = useTodoActions();
+
   const handleTodoClick = (id: string, action: TodoFlowActionType) => {
     switch (action) {
       case "MARK AS COMPLETE":
@@ -29,30 +30,38 @@ const App = () => {
     }
   };
   return (
-    <Box>
-      {isSuccess && <TodoFlow todos={data} onTodoClick={handleTodoClick} />}
-      <Button
-        buttonType="primary"
-        size="large"
-        iconType="plus"
-        onClick={() => {
-          setCreateDialogueOpen(true);
-        }}
-      ></Button>
-
-      <Dialog
-        open={createDialogueOpen}
-        onCancel={() => setCreateDialogueOpen(false)}
-        title="Create New Todo"
-        showCloseIcon
-      >
-        <CreateTodo
-          onSubmit={async (data) => {
-            await createTodo(data);
-            setCreateDialogueOpen(false);
+    <Box
+      alignContent={"center"}
+      width={"full"}
+      height={"100vh"}
+      flexDirection={"row"}
+      justifyItems={"center"}
+    >
+      <Box minWidth="400px" maxWidth="1024px" width={"full"}>
+        {isSuccess && <TodoFlow todos={data} onTodoClick={handleTodoClick} />}
+        <Button
+          buttonType="primary"
+          size="large"
+          iconType="plus"
+          onClick={() => {
+            setCreateDialogueOpen(true);
           }}
-        />
-      </Dialog>
+        ></Button>
+
+        <Dialog
+          open={createDialogueOpen}
+          onCancel={() => setCreateDialogueOpen(false)}
+          title="Create New Todo"
+          showCloseIcon
+        >
+          <CreateTodo
+            onSubmit={async (data) => {
+              await createTodo(data);
+              setCreateDialogueOpen(false);
+            }}
+          />
+        </Dialog>
+      </Box>
     </Box>
   );
 };
