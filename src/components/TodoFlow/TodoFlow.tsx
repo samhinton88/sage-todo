@@ -27,6 +27,7 @@ const TodoList = ({
               onTodoClick(todo.id, "MARK AS IN PROGRESS")
             }
             onClickMarkPending={() => onTodoClick(todo.id, "MARK AS PENDING")}
+            onClickDelete={() => onTodoClick(todo.id, "DELETE")}
           />
         );
       })}

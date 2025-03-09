@@ -8,6 +8,6 @@ export type UpdateTodoPayload = {
 };
 
 export type TodoStatus = "PENDING" | "COMPLETE" | "IN PROGRESS";
-export type TodoFlowActionType = `MARK AS ${TodoStatus}`;
+export type TodoFlowActionType = `MARK AS ${TodoStatus}` | "DELETE";
 
 export type Todo = TodoPayload & { id: string; status: TodoStatus };

@@ -15,6 +15,19 @@ describe("TodoItem", () => {
     expect(await screen.findByText("Something to be done")).toBeInTheDocument();
   });
 
+  test("renders a delete button", async () => {
+    const todo = {
+      id: "some-unique-id",
+      content: "Something to be done",
+      status: "PENDING" as TodoStatus,
+    };
+    render(<TodoItem todo={todo} />);
+
+    expect(
+      await screen.getByRole("button", { name: "Delete Todo" })
+    ).toBeInTheDocument();
+  });
+
   test("renders a only mark as in progress button when PENDING", async () => {
     const todo = {
       id: "some-unique-id",

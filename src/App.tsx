@@ -13,7 +13,8 @@ const App = () => {
   const { mutateAsync: createTodo } = useCreateTodo();
   const [createDialogueOpen, setCreateDialogueOpen] = useState(false);
 
-  const { markAsComplete, markAsInProgress, markAsPending } = useTodoActions();
+  const { markAsComplete, markAsInProgress, markAsPending, deleteTodo } =
+    useTodoActions();
 
   const handleTodoClick = (id: string, action: TodoFlowActionType) => {
     switch (action) {
@@ -26,7 +27,9 @@ const App = () => {
       case "MARK AS PENDING":
         markAsPending(id);
         break;
-
+      case "DELETE":
+        deleteTodo(id);
+        break;
       default:
         throw new Error("Unknown Action " + action);
     }

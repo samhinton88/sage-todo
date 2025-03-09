@@ -8,11 +8,13 @@ export const TodoItem = ({
   onClickMarkInProgress,
   onClickMarkComplete,
   onClickMarkPending,
+  onClickDelete,
 }: {
   todo: Todo;
   onClickMarkInProgress?: () => void;
   onClickMarkComplete?: () => void;
   onClickMarkPending?: () => void;
+  onClickDelete?: () => void;
 }) => {
   return (
     <Box
@@ -35,6 +37,13 @@ export const TodoItem = ({
         width={"full"}
         gap={1}
       >
+        <ButtonMinor
+          iconType="bin"
+          aria-label="Delete Todo"
+          iconTooltipMessage="Delete"
+          size="small"
+          onClick={onClickDelete}
+        />
         {todo.status === "PENDING" && (
           <ButtonMinor
             // TODO: I'm not sure how intuitive this icon is, consider other options
