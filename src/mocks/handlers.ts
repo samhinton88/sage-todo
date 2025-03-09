@@ -46,6 +46,15 @@ const updateTodo = (id: string, data: UpdateTodoPayload) => {
   return updated;
 };
 
+const deleteTodo = (id: string) => {
+  const toDeleteIndex = todos.findIndex((todo) => todo.id === id);
+
+  // this is very inefficient but it's for development only
+  todos = [...todos.slice(0, toDeleteIndex), ...todos.slice(toDeleteIndex + 1)];
+
+  return true;
+};
+
 export const dropTodos = () => {
   todos = [];
 };
@@ -82,4 +91,9 @@ export const handlers = [
       return HttpResponse.json(updatedTodo, { status: 201 });
     }
   ),
+  http.delete<{ id: string }>(`${API_ROOT}/todo/:id`, async ({ params }) => {
+    const res = deleteTodo(params.id);
+
+    return HttpResponse.json(res, { status: 201 });
+  }),
 ];

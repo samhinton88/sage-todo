@@ -37,3 +37,15 @@ export const updateTodo = async (todoId: string, data: UpdateTodoPayload) => {
 
   return res.json();
 };
+
+export const deleteTodo = async (todoId: string) => {
+  const res = await fetch(`${API_ROOT}/todo/${todoId}`, {
+    method: "DELETE",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to delete todo");
+  }
+
+  return res.json();
+};

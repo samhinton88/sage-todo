@@ -9,13 +9,14 @@ import {
   test,
   vi,
 } from "vitest";
-import { createTodo, listTodos, updateTodo } from "./transport";
+import { createTodo, deleteTodo, listTodos, updateTodo } from "./transport";
 import { TodoPayload, UpdateTodoPayload } from "./shared/types";
 import { API_ROOT } from "./config";
 
 const postRequestMock = vi.fn();
 const listRequestMock = vi.fn();
 const patchRequestMock = vi.fn();
+const deleteRequestMock = vi.fn();
 
 const dummyTodos = [
   {
@@ -60,6 +61,16 @@ const server = setupServer(
         { id: "fake-id-123", content: "My updated todo", status: "COMPLETE" },
         { status: 201 }
       );
+    }
+  ),
+  http.delete<{ id: string }, UpdateTodoPayload>(
+    `${API_ROOT}/todo/:id`,
+    async ({ params }) => {
+      // Read the intercepted request body as JSON.
+
+      deleteRequestMock(params.id);
+
+      return HttpResponse.json(true, { status: 201 });
     }
   )
 );
@@ -151,6 +162,29 @@ describe("transport", () => {
       await expect(
         updateTodo("some-id", { content: "Will fail" })
       ).rejects.toThrowError("Failed to update todo");
+    });
+  });
+
+  describe("deleteTodo", async () => {
+    test("makes a DELETE request and returns true on success", async () => {
+      const response = await deleteTodo("fake-id-123");
+      expect(deleteRequestMock).toHaveBeenCalledWith("fake-id-123");
+      // Confirm the returned JSON matches what the MSW handler gave us
+      expect(response).toBe(true);
+    });
+
+    test("throws a reasonable error when the response is not ok", async () => {
+      // Override the default handler to return a 500 error
+      server.use(
+        http.delete(`${API_ROOT}/todo/:id`, () => {
+          return new HttpResponse(null, { status: 500 });
+        })
+      );
+
+      // Expect updateTodo to reject with an error
+      await expect(deleteTodo("some-id")).rejects.toThrowError(
+        "Failed to delete todo"
+      );
     });
   });
 });
