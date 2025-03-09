@@ -23,6 +23,7 @@ export const TodoFlow = ({ todos }: { todos: Todo[] }) => {
     },
     {
       PENDING: [],
+      "IN PROGRESS": [],
       COMPLETE: [],
     } as Record<TodoStatus, Todo[]>
   );

@@ -7,6 +7,6 @@ export type UpdateTodoPayload = {
   status?: TodoStatus;
 };
 
-export type TodoStatus = "PENDING" | "COMPLETE";
+export type TodoStatus = "PENDING" | "COMPLETE" | "IN PROGRESS";
 
 export type Todo = TodoPayload & { id: string; status: TodoStatus };
