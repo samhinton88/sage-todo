@@ -22,9 +22,9 @@ const createCompleteTodo = (data: Omit<Todo, "id" | "status">) => ({
 });
 
 let todos: Todo[] = [
-  createPendingTodo({ content: "What I have left to do" }),
-  createInProgressTodo({ content: "What I am doing now" }),
-  createCompleteTodo({ content: "What I did earlier" }),
+  createPendingTodo({ content: "Eat dinner." }),
+  createInProgressTodo({ content: "Use my ingredients to cook dinner." }),
+  createCompleteTodo({ content: "Buy all the ingredients that I need." }),
 ];
 const addTodo = (data: Omit<Todo, "id">) => {
   const newTodo = createPendingTodo(data);

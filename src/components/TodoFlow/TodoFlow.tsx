@@ -13,8 +13,10 @@ const TodoList = ({
   onTodoClick: (id: string, action: TodoFlowActionType) => void;
 }) => {
   return (
-    <Box display={"flex"} flexDirection="column">
-      <Typography variant="segment-header">{title}</Typography>
+    <Box display={"flex"} flexDirection="column" marginBottom={4} gap={2}>
+      <Typography marginY={1} variant="segment-header">
+        {title}
+      </Typography>
       {todos.map((todo) => {
         return (
           <TodoItem

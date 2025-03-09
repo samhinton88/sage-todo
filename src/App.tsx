@@ -11,6 +11,7 @@ const App = () => {
   const { data, isSuccess } = useListTodos();
   const { mutateAsync: createTodo } = useCreateTodo();
   const [createDialogueOpen, setCreateDialogueOpen] = useState(false);
+
   const { markAsComplete, markAsInProgress, markAsPending } = useTodoActions();
 
   const handleTodoClick = (id: string, action: TodoFlowActionType) => {
@@ -36,8 +37,9 @@ const App = () => {
       height={"100vh"}
       flexDirection={"row"}
       justifyItems={"center"}
+      px={1}
     >
-      <Box minWidth="400px" maxWidth="1024px" width={"full"}>
+      <Box minWidth="320px" maxWidth="1024px" width={"full"}>
         {isSuccess && <TodoFlow todos={data} onTodoClick={handleTodoClick} />}
         <Button
           buttonType="primary"
