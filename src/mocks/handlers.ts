@@ -1,6 +1,6 @@
 import { http, HttpResponse } from "msw";
 import { API_ROOT } from "../config";
-import { Todo, TodoStatus } from "../shared/types";
+import { Todo, TodoStatus, UpdateTodoPayload } from "../shared/types";
 
 const createId = () => crypto.randomUUID();
 const createTodo = (data: Omit<Todo, "id" | "status">) => ({
@@ -13,6 +13,21 @@ let todos: Todo[] = [createTodo({ content: "test" })];
 const addTodo = (data: Omit<Todo, "id">) => {
   const newTodo = createTodo(data);
   todos.push(newTodo);
+};
+
+const updateTodo = (id: string, data: UpdateTodoPayload) => {
+  const toUpdateIndex = todos.findIndex((todo) => todo.id === id);
+  const toUpdate = todos[toUpdateIndex];
+
+  const updated = { ...toUpdate, ...data };
+  // this is very inefficient but it's for development only
+  todos = [
+    ...todos.slice(0, toUpdateIndex),
+    updated,
+    ...todos.slice(toUpdateIndex + 1),
+  ];
+
+  return updated;
 };
 
 export const dropTodos = () => {
@@ -40,4 +55,15 @@ export const handlers = [
 
     return HttpResponse.json(newTodo, { status: 201 });
   }),
+  http.patch<{ id: string }, UpdateTodoPayload>(
+    `${API_ROOT}/todo/:id`,
+    async ({ request, params }) => {
+      // Read the intercepted request body as JSON.
+      const todoData = await request.json();
+
+      const updatedTodo = updateTodo(params.id, todoData);
+
+      return HttpResponse.json(updatedTodo, { status: 201 });
+    }
+  ),
 ];
