@@ -9,7 +9,6 @@ export const CreateTodo = ({
 }: {
   onSubmit: (data: TodoPayload) => void;
 }) => {
-  console.log("create todo");
   const [value, setValue] = useState("");
   const handleValueChange = ({
     target,
@@ -21,7 +20,7 @@ export const CreateTodo = ({
     <Form
       onSubmit={(d) => {
         d.preventDefault();
-        console.log(d);
+        setValue("");
         onSubmit({ content: value });
       }}
       leftSideButtons={

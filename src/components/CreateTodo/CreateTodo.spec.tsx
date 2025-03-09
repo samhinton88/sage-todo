@@ -25,5 +25,6 @@ describe("<CreateTodo/>", () => {
 
     expect(onSubmitMock).toHaveBeenCalledTimes(1);
     expect(onSubmitMock).toHaveBeenCalledWith({ content: "my new todo" });
+    expect(textarea).toHaveValue("");
   });
 });
