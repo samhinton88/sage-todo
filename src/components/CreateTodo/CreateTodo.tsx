@@ -10,9 +10,13 @@ export const CreateTodo = ({
   onSubmit: (data: TodoPayload) => void;
 }) => {
   const [value, setValue] = useState("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const handleValueChange = ({
     target,
   }: React.ChangeEvent<HTMLInputElement>) => {
+    if (errors.content) {
+      setErrors({});
+    }
     setValue(target.value);
   };
 
@@ -20,6 +24,10 @@ export const CreateTodo = ({
     <Form
       onSubmit={(d) => {
         d.preventDefault();
+        if (!value) {
+          setErrors({ content: "Content cannot be empty" });
+          return;
+        }
         setValue("");
         onSubmit({ content: value });
       }}
@@ -32,8 +40,15 @@ export const CreateTodo = ({
         </Button>
       }
       stickyFooter
+      errorCount={Object.values(errors).length}
     >
-      <Textarea label="Content" value={value} onChange={handleValueChange} />
+      <Textarea
+        required
+        error={errors.content}
+        label="Content"
+        value={value}
+        onChange={handleValueChange}
+      />
     </Form>
   );
 };

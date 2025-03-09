@@ -27,4 +27,13 @@ describe("<CreateTodo/>", () => {
     expect(onSubmitMock).toHaveBeenCalledWith({ content: "my new todo" });
     expect(textarea).toHaveValue("");
   });
+
+  test("stops form submission when there is no content", async () => {
+    const onSubmitMock = vi.fn();
+    render(<CreateTodo onSubmit={onSubmitMock} />);
+
+    fireEvent.click(screen.getByRole("button", { name: /save/i }));
+
+    expect(onSubmitMock).not.toHaveBeenCalled();
+  });
 });
