@@ -3,15 +3,31 @@ import { API_ROOT } from "../config";
 import { Todo, TodoStatus, UpdateTodoPayload } from "../shared/types";
 
 const createId = () => crypto.randomUUID();
-const createTodo = (data: Omit<Todo, "id" | "status">) => ({
+const createPendingTodo = (data: Omit<Todo, "id" | "status">) => ({
   ...data,
   id: createId(),
   status: "PENDING" as TodoStatus,
 });
 
-let todos: Todo[] = [createTodo({ content: "test" })];
+const createInProgressTodo = (data: Omit<Todo, "id" | "status">) => ({
+  ...data,
+  id: createId(),
+  status: "IN PROGRESS" as TodoStatus,
+});
+
+const createCompleteTodo = (data: Omit<Todo, "id" | "status">) => ({
+  ...data,
+  id: createId(),
+  status: "COMPLETE" as TodoStatus,
+});
+
+let todos: Todo[] = [
+  createPendingTodo({ content: "What I have left to do" }),
+  createInProgressTodo({ content: "What I am doing now" }),
+  createCompleteTodo({ content: "What I did earlier" }),
+];
 const addTodo = (data: Omit<Todo, "id">) => {
-  const newTodo = createTodo(data);
+  const newTodo = createPendingTodo(data);
   todos.push(newTodo);
 };
 
@@ -35,7 +51,7 @@ export const dropTodos = () => {
 };
 
 export const seedTodos = (...todoData: Omit<Todo, "id">[]) => {
-  const newTodos = todoData.map(createTodo);
+  const newTodos = todoData.map(createPendingTodo);
 
   todos = newTodos;
 
@@ -50,7 +66,7 @@ export const handlers = [
     // Read the intercepted request body as JSON.
     const todoData = await request.json();
 
-    const newTodo = createTodo(todoData);
+    const newTodo = createPendingTodo(todoData);
     addTodo(newTodo);
 
     return HttpResponse.json(newTodo, { status: 201 });

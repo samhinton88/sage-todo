@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { Todo, TodoPayload } from "./shared/types";
+import { Todo, TodoPayload, UpdateTodoPayload } from "./shared/types";
 import { createTodo, listTodos, updateTodo } from "./transport";
 
 type CreateTodoResult = Todo;
@@ -27,11 +27,24 @@ export const useUpdateTodo = () => {
   return useMutation<
     UpdateTodoResult,
     Error,
-    { id: string; data: TodoPayload }
+    { id: string; data: UpdateTodoPayload }
   >({
     mutationFn: ({ id, data }) => updateTodo(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
   });
+};
+
+export const useTodoActions = () => {
+  const { mutateAsync: udpateTodoAsync } = useUpdateTodo();
+
+  const markAsPending = (id: string) =>
+    udpateTodoAsync({ id, data: { status: "PENDING" } });
+  const markAsComplete = (id: string) =>
+    udpateTodoAsync({ id, data: { status: "COMPLETE" } });
+  const markAsInProgress = (id: string) =>
+    udpateTodoAsync({ id, data: { status: "IN PROGRESS" } });
+
+  return { markAsComplete, markAsInProgress, markAsPending };
 };
