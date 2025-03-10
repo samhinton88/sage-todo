@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
-
 import { AppWithProviders } from "./Providers";
+import "carbon-react/lib/style/fonts.css";
 
 async function enableMocking() {
   if (import.meta.env.PROD) {
