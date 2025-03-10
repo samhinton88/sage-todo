@@ -1,7 +1,7 @@
 import Box from "carbon-react/lib/components/box";
 import { CreateTodo } from "./components/CreateTodo";
 import { TodoFlow } from "./components/TodoFlow/TodoFlow";
-import { useCreateTodo, useListTodos, useTodoActions } from "./hooks";
+import { useListTodos, useTodoActions } from "./hooks";
 import { TodoFlowActionType } from "./shared/types";
 import { useState } from "react";
 import Button from "carbon-react/lib/components/button";
@@ -10,11 +10,16 @@ import GlobalHeader from "carbon-react/lib/components/global-header";
 
 const App = () => {
   const { data, isSuccess } = useListTodos();
-  const { mutateAsync: createTodo } = useCreateTodo();
-  const [createDialogueOpen, setCreateDialogueOpen] = useState(false);
 
-  const { markAsComplete, markAsInProgress, markAsPending, deleteTodo } =
-    useTodoActions();
+  const {
+    markAsComplete,
+    markAsInProgress,
+    markAsPending,
+    deleteTodo,
+    createTodo,
+  } = useTodoActions();
+
+  const [createDialogueOpen, setCreateDialogueOpen] = useState(false);
 
   const handleTodoClick = (id: string, action: TodoFlowActionType) => {
     switch (action) {
@@ -34,6 +39,7 @@ const App = () => {
         throw new Error("Unknown Action " + action);
     }
   };
+
   return (
     <Box backgroundColor="blackOpacity05" pt={8} height={"100vh"}>
       <GlobalHeader aria-label="Default global header component">
