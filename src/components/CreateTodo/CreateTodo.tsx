@@ -6,8 +6,10 @@ import { TodoPayload } from "../../shared/types";
 
 export const CreateTodo = ({
   onSubmit,
+  onCancel,
 }: {
   onSubmit: (data: TodoPayload) => void;
+  onCancel: () => void;
 }) => {
   const [value, setValue] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -31,9 +33,7 @@ export const CreateTodo = ({
         setValue("");
         onSubmit({ content: value });
       }}
-      leftSideButtons={
-        <Button onClick={() => console.log("cancel")}>Cancel</Button>
-      }
+      leftSideButtons={<Button onClick={onCancel}>Cancel</Button>}
       saveButton={
         <Button buttonType="primary" type="submit">
           Save

@@ -68,6 +68,9 @@ const App = () => {
           showCloseIcon
         >
           <CreateTodo
+            onCancel={() => {
+              setCreateDialogueOpen(false);
+            }}
             onSubmit={async (data) => {
               await createTodo(data);
               setCreateDialogueOpen(false);
