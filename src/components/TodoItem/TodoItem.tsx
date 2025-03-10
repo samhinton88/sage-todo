@@ -44,9 +44,27 @@ export const TodoItem = ({
           size="small"
           onClick={onClickDelete}
         />
+        {/*
+          Review: Perhaps we could render these controls conditionally on the 
+          presence of handler functions being passed down? This means we could 
+          have more flexibility and allow cases like where a "PENDING" todo 
+          should be blocked from progressing - in this case we'd just omit the 
+          onClickMarkInProgress handler.
+
+          Something like: onClickMarkInProgress &&  (
+            <ButtonMinor
+              // Review: I'm not sure how intuitive this icon is, talk to design?
+              iconType="target"
+              aria-label="Mark as In Progress"
+              iconTooltipMessage="Mark as In Progress"
+              size="small"
+              onClick={onClickMarkInProgress}
+            ></ButtonMinor>
+        )
+        */}
         {todo.status === "PENDING" && (
           <ButtonMinor
-            // TODO: I'm not sure how intuitive this icon is, consider other options
+            // Review: I'm not sure how intuitive this icon is, talk to design?
             iconType="target"
             aria-label="Mark as In Progress"
             iconTooltipMessage="Mark as In Progress"

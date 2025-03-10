@@ -10,8 +10,45 @@ import {
   vi,
 } from "vitest";
 import { createTodo, deleteTodo, listTodos, updateTodo } from "./transport";
-import { TodoPayload, UpdateTodoPayload } from "./shared/types";
+import { CreateTodoPayload, UpdateTodoPayload } from "./shared/types";
 import { API_ROOT } from "./config";
+
+/* 
+  This is the test suite with most bells and whistles so
+  I'll put a few thoughts about testing in general.
+
+  I've worked on teams which used the test runner structures
+  to build up state via deep nesting, something like:
+
+  describe('module X', () => {
+    // logic to provision state X
+    describe('case category X.Y', () => {
+      // logic to provision state X.Y
+
+      describe('case Z within X.Y', () => {
+        // further state
+        test() test() test()
+      })
+    })
+  })
+
+  Over time I've tended to prefer more 'anti patterns' such
+  as just copy pasting, using string literals and
+  repeating code for the sake of readability.
+  The pay off is longer files, but in general it 
+  seems to make devs happier.
+
+  I enjoy the debate either way.
+
+  Things to avoid:
+  - bleeding state between suites
+  - testing implementation detail rather than behaviour
+  - making writing tests a terrible DevEx
+  
+  Things to encourage:
+  - mocking
+  - readability
+*/
 
 const postRequestMock = vi.fn();
 const listRequestMock = vi.fn();
@@ -75,6 +112,7 @@ const server = setupServer(
   )
 );
 
+// clean everything up so we don't bleed state
 beforeAll(() => server.listen());
 afterEach(() => {
   server.resetHandlers();
@@ -85,7 +123,7 @@ afterAll(() => server.close());
 describe("transport", () => {
   describe("createTodo", async () => {
     test("makes a POST request and returns JSON on success", async () => {
-      const newTodo: TodoPayload = { content: "My test todo" };
+      const newTodo: CreateTodoPayload = { content: "My test todo" };
 
       const response = await createTodo(newTodo);
       expect(postRequestMock).toHaveBeenCalledWith(newTodo);

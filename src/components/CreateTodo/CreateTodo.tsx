@@ -2,13 +2,13 @@ import { useState } from "react";
 import Form from "carbon-react/lib/components/form";
 import Button from "carbon-react/lib/components/button";
 import Textarea from "carbon-react/lib/components/textarea";
-import { TodoPayload } from "../../shared/types";
+import { CreateTodoPayload } from "../../shared/types";
 
 export const CreateTodo = ({
   onSubmit,
   onCancel,
 }: {
-  onSubmit: (data: TodoPayload) => void;
+  onSubmit: (data: CreateTodoPayload) => void;
   onCancel: () => void;
 }) => {
   const [value, setValue] = useState("");

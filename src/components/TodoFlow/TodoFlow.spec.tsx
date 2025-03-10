@@ -51,6 +51,11 @@ describe("TodoFlow", () => {
         status: "PENDING" as TodoStatus,
       },
       {
+        id: "some-unique-id-0",
+        content: "Something currently doing",
+        status: "IN PROGRESS" as TodoStatus,
+      },
+      {
         id: "some-unique-id-1",
         content: "Another thing to be done",
         status: "COMPLETE" as TodoStatus,
@@ -64,6 +69,15 @@ describe("TodoFlow", () => {
     // Verify that the pending container has "Something to be done"
     expect(
       within(pendingSegment).getByText("Something to be done")
+    ).toBeInTheDocument();
+
+    // Find the closest container for the "IN PROGRESS" segment
+    const inProgressHeader = screen.getByText("IN PROGRESS");
+    const inProgressSegment = inProgressHeader.closest("div")!;
+
+    // Verify that the complete container has "Something currently doing"
+    expect(
+      within(inProgressSegment).getByText("Something currently doing")
     ).toBeInTheDocument();
 
     // Find the closest container for the "COMPLETE" segment

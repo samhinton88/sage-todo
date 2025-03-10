@@ -13,6 +13,14 @@ afterEach(() => {
 afterAll(() => server.close());
 
 describe("Todo", () => {
+  /**
+   * This suite for integration tests, i.e. how different components in
+   * the todo system should work together in the UI
+   *
+   * Review: is it enough that we are light on tests here? I suppose you are
+   *   testing components lower down the tree and asserting that those components
+   *   are rendered - is this done sufficiently? Let's have a debate etc.
+   */
   test("renders a list of todos from an api", async () => {
     seedTodos({ content: "My test todo", status: "PENDING" });
     render(<AppWithProviders />);

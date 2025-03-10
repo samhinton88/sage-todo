@@ -1,4 +1,8 @@
-export type TodoPayload = {
+/*
+  It generally makes sense to create single source of truth
+  for any shared types in the system.
+*/
+export type CreateTodoPayload = {
   content: string;
 };
 
@@ -10,4 +14,4 @@ export type UpdateTodoPayload = {
 export type TodoStatus = "PENDING" | "COMPLETE" | "IN PROGRESS";
 export type TodoFlowActionType = `MARK AS ${TodoStatus}` | "DELETE";
 
-export type Todo = TodoPayload & { id: string; status: TodoStatus };
+export type Todo = CreateTodoPayload & { id: string; status: TodoStatus };

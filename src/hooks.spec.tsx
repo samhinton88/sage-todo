@@ -177,7 +177,7 @@ describe("hooks", () => {
       ]);
     });
 
-    it.only("should handle errors if listTodos fails", async () => {
+    it("should handle errors if listTodos fails", async () => {
       (listTodos as Mock).mockRejectedValueOnce(
         new Error("Failed to fetch todos")
       );

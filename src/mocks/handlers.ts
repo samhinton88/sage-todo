@@ -2,6 +2,16 @@ import { http, HttpResponse } from "msw";
 import { API_ROOT } from "../config";
 import { Todo, TodoStatus, UpdateTodoPayload } from "../shared/types";
 
+/* 
+  MSW offers a great DevEx when working on a front end / micro frontend
+  in isolation.
+
+  It's trivial here to simulate error states, change data etc.
+
+  I have also added a few simplistic functions to approximate 
+  sever logic.
+*/
+
 const createId = () => crypto.randomUUID();
 const createPendingTodo = (data: Omit<Todo, "id" | "status">) => ({
   ...data,

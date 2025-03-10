@@ -1,7 +1,10 @@
 import { API_ROOT } from "./config";
-import { TodoPayload, UpdateTodoPayload } from "./shared/types";
+import { CreateTodoPayload, UpdateTodoPayload } from "./shared/types";
 
-export const createTodo = async (data: TodoPayload) => {
+/*
+  This module separates out the logic for making requests to the API
+*/
+export const createTodo = async (data: CreateTodoPayload) => {
   const res = await fetch(`${API_ROOT}/todo`, {
     method: "POST",
     body: JSON.stringify(data),
@@ -9,6 +12,7 @@ export const createTodo = async (data: TodoPayload) => {
   });
 
   if (!res.ok) {
+    // React Query needs us to actively throw an exception here
     throw new Error("Failed to create todo");
   }
 
