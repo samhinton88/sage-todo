@@ -18,7 +18,11 @@ export const useCreateTodo = () => {
 };
 
 export const useListTodos = () => {
-  return useQuery<Todo[]>({ queryKey: ["todos"], queryFn: listTodos });
+  return useQuery<Todo[]>({
+    queryKey: ["todos"],
+    queryFn: listTodos,
+    retry: false, // don't retry if it fails
+  });
 };
 
 export const useUpdateTodo = () => {
@@ -50,6 +54,7 @@ export const useDeleteTodo = () => {
 export const useTodoActions = () => {
   const { mutateAsync: udpateTodoAsync } = useUpdateTodo();
   const { mutateAsync: deleteTodoAsync } = useDeleteTodo();
+  const { mutateAsync: createTodoAsync } = useCreateTodo();
 
   const markAsPending = (id: string) =>
     udpateTodoAsync({ id, data: { status: "PENDING" } });
@@ -58,6 +63,13 @@ export const useTodoActions = () => {
   const markAsInProgress = (id: string) =>
     udpateTodoAsync({ id, data: { status: "IN PROGRESS" } });
   const deleteTodo = (id: string) => deleteTodoAsync(id);
+  const createTodo = (data: TodoPayload) => createTodoAsync(data);
 
-  return { markAsComplete, markAsInProgress, markAsPending, deleteTodo };
+  return {
+    markAsComplete,
+    markAsInProgress,
+    markAsPending,
+    deleteTodo,
+    createTodo,
+  };
 };
