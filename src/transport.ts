@@ -26,7 +26,7 @@ export const listTodos = async () => {
 
 export const updateTodo = async (todoId: string, data: UpdateTodoPayload) => {
   const res = await fetch(`${API_ROOT}/todo/${todoId}`, {
-    method: "PATCH", // allow for partial data payloads rather that PUT
+    method: "PATCH", // allow for partial data payloads rather tha PUT
     body: JSON.stringify(data),
     headers: { "Content-Type": "application/json" },
   });
